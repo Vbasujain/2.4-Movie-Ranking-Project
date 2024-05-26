@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Basu Jain Recommendations</title>
+
+    <style>
+        body {
+            background-color: #f3e7e2; /* Vintage background color */
+            color: #573f36; /* Vintage text color */
+            font-family: 'Georgia', serif; /* Vintage font family */
+            font-size: 18px; /* Vintage font size */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        header h1 {
+            margin: 0;
+            text-decoration: underline;
+            color: #573f36;
+            font-family: 'Georgia', serif;
+        }
+
+        marquee {
+            background-color: #c9ada1;
+            color: #573f36;
+            padding: 10px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        marquee a {
+            color: #573f36;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .left-half,
+        .right-half {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .tags {
+            margin: 20px 0;
+        }
+
+        .tags a {
+            color: #573f36;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin: 10px 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-top: 10px;
+        }
+
+        form input,
+        form textarea {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
+        form input[type="submit"] {
+            background-color: #ff4500;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            align-self: flex-start;
+        }
+
+        #confirmation {
+            display: none;
+            background-color: #ffffcc;
+            border: 1px solid #ffcc00;
+            color: #333333;
+            padding: 10px;
+            margin-top: 20px;
+            align-content: center;
+        }
+
+        footer {
+            background-color: #573f36;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            height: 30px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .left-half,
+            .right-half {
+                min-width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <script>
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                city: document.getElementById('city').value,
+                message: document.getElementById('message').value
+            };
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert("Details are submitted!");
+                }else if (response.status === 409){
+                    alert("Email already used. Please use a different email.");
+                }  else {
+                    const errorText = await response.text();
+                    console.error('Error:', errorText);
+                  
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Error:", error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('contactForm').addEventListener('submit', handleSubmit);
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Basu Jain Movies, Anime, and Books Recommendations</h1>
+    </header>
+
+    <marquee behavior="scroll" direction="left" scrollamount="3">
+        <a href="books.html">Books</a>
+        <a href="anime.html">Anime</a>
+        <a href="movies.html">Movies</a>
+    </marquee>
+
+    <main>
+        <div class="container">
+            <div class="left-half">
+                <h2>Welcome to Basu Jain's Recommendation Site!</h2>
+                <p>Discover my top recommendations for movies, anime, and books.</p>
+                <nav class="tags">
+                    <a href="movies.html">Movie Collection</a>
+                    <a href="anime.html">Anime Collection</a>
+                    <a href="books.html">Book Collection</a>
+                </nav>
+            </div>
+            <div class="right-half">
+                <form id="contactForm">
+                    <h2>Contact Me</h2>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email"  required>
+                    <label for="city">Current City:</label>
+                    <input type="text" id="city" name="city" required>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" required></textarea>
+                    <input type="submit" value="Submit">
+                </form>
+        </div>
+    </main>
+
+ 
+</body>
+</html>
